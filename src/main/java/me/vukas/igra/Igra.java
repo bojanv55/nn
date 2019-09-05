@@ -6,6 +6,9 @@ import static me.vukas.Program.REDOVA;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
+import me.vukas.Program;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +30,8 @@ public class Igra {
   List<Blok> blokovi = new ArrayList<>();
   Reket r;
   Loptica l;
+
+  Program.TestPane j;
 
   boolean kensel = false;
   public boolean stop = false;
@@ -59,8 +64,9 @@ public class Igra {
 
   Thread t;
 
-  public Igra(Terminal terminal) {
+  public Igra(Terminal terminal, Program.TestPane j) {
     this.terminal = terminal;
+    this.j = j;
   }
 
   public void kreni() throws IOException, InterruptedException {
@@ -157,13 +163,20 @@ public class Igra {
 
   private void nacrtajSve() throws IOException {
     for(int i=0; i<(KOLONA * REDOVA_KOCKI); i++){
-      Blok b = new Blok(terminal);
+      Blok b = new Blok(terminal, i);
+      j.dodajBlok(b);
       blokovi.add(b);
-      b.nacrtajBlokBr(i);
+      b.nacrtajBlokBr();
     }
 
+
     r.nacrtajReket();
+    j.dodajReket(r);
+
+
     l.nacrtajLopticu();
+
+    j.repaint();
 
     terminal.flush();
   }

@@ -1,11 +1,15 @@
 package me.vukas.igra;
 
 import static me.vukas.Program.KOLONA;
+import static me.vukas.Program.KVADRAT;
 import static me.vukas.igra.Igra.PRAZNIH_REDOVA;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.Terminal;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
@@ -16,15 +20,41 @@ public class Blok {
   private int red;
   private int kolona;
 
-  public Blok(Terminal terminal) {
+  int br;
+
+  public Blok(Terminal terminal, int i) {
     this.terminal = terminal;
+    br = i;
+  }
+
+
+  public void paintComponent(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
+
+    red = PRAZNIH_REDOVA + 1 + Math.floorDiv(br , KOLONA);
+    kolona = (br % KOLONA);
+
+    switch (red){
+      case 4:
+        g2d.setColor(Color.RED);
+        break;
+      case 5:
+        g2d.setColor(Color.BLUE);
+        break;
+      case 6:
+        g2d.setColor(Color.WHITE);
+        break;
+    }
+
+    g2d.fillRect(kolona * KVADRAT, red * KVADRAT, KVADRAT, KVADRAT);
+
   }
 
   public SveTacke daj(){
     return new SveTacke(Collections.singletonList(new Koordinate(red, kolona)));
   }
 
-  public void nacrtajBlokBr(int br) throws IOException {
+  public void nacrtajBlokBr() throws IOException {
     red = PRAZNIH_REDOVA + 1 + Math.floorDiv(br , KOLONA);
     kolona = (br % KOLONA);
 

@@ -1,11 +1,14 @@
 package me.vukas.igra;
 
-import static me.vukas.Program.KOLONA;
-import static me.vukas.Program.REDOVA;
+import static me.vukas.Program.*;
+import static me.vukas.Program.KVADRAT;
+import static me.vukas.igra.Igra.PRAZNIH_REDOVA;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.terminal.Terminal;
+
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,15 @@ public class Reket {
     this.terminal = terminal;
     pocetak = (Math.floorDiv(KOLONA, 2)-Math.floorDiv(
         DUZINA_REKETA,2));
+  }
+
+  public void paintComponent(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
+
+    g2d.setColor(Color.GREEN);
+
+    g2d.fillRect(pocetak * KVADRAT, (REDOVA * KVADRAT)-3*KVADRAT, DUZINA_REKETA * KVADRAT, KVADRAT);
+
   }
 
   public void nacrtajReket() throws IOException {
