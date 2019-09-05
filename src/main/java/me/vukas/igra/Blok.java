@@ -62,12 +62,12 @@ public class Blok {
       if(sledPoz.getPred().getRed() == red+1){
         return Igra.UdarU.BLOK_DOLE;
       }
-      if(sledPoz.getPred().getKolona() == kolona-1){
-        return Igra.UdarU.BLOK_L;
-      }
-      if(sledPoz.getPred().getKolona() == kolona+1){
-        return Igra.UdarU.BLOK_DESNO;
-      }
+//      if(sledPoz.getPred().getKolona() == kolona-1){
+//        return Igra.UdarU.BLOK_L;
+//      }
+//      if(sledPoz.getPred().getKolona() == kolona+1){
+//        return Igra.UdarU.BLOK_DESNO;
+//      }
     }
     return null;
   }

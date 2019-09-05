@@ -109,14 +109,41 @@ public class Loptica {
         case REKET_L:
           smjer = Smjer.GORE_LIJEVO;
           break;
+        case BLOK_G:
+          if(smjer == Smjer.DOLE) {
+            smjer = Smjer.GORE;
+          }
+          else if(smjer == Smjer.DOLE_DESNO){
+            smjer = Smjer.GORE_DESNO;
+          }
+          else if(smjer == Smjer.DOLE_LIJEVO){
+            smjer = Smjer.GORE_LIJEVO;
+          }
+          break;
+//        case BLOK_DESNO:
+//          if(smjer == Smjer.GORE_LIJEVO){
+//            smjer = Smjer.GORE_DESNO;
+//          }
+//          else if(smjer == Smjer.DOLE_LIJEVO){
+//            smjer = Smjer.DOLE_DESNO;
+//          }
+//          break;
+//        case BLOK_L:
+//          if(smjer == Smjer.GORE_DESNO){
+//            smjer = Smjer.GORE_LIJEVO;
+//          }
+//          else if(smjer == Smjer.DOLE_DESNO){
+//            smjer = Smjer.DOLE_LIJEVO;
+//          }
+//          break;
         case BLOK_DOLE:
           if(smjer == Smjer.GORE) {
             smjer = Smjer.DOLE;
           }
-          if(smjer == Smjer.GORE_LIJEVO){
+          else if(smjer == Smjer.GORE_LIJEVO){
             smjer = Smjer.DOLE_LIJEVO;
           }
-          if(smjer == Smjer.GORE_DESNO){
+          else if(smjer == Smjer.GORE_DESNO){
             smjer = Smjer.DOLE_DESNO;
           }
           break;
@@ -124,10 +151,10 @@ public class Loptica {
           if(smjer == Smjer.GORE) {
             smjer = Smjer.DOLE;
           }
-          if(smjer == Smjer.GORE_LIJEVO){
+          else if(smjer == Smjer.GORE_LIJEVO){
             smjer = Smjer.DOLE_LIJEVO;
           }
-          if(smjer == Smjer.GORE_DESNO){
+          else if(smjer == Smjer.GORE_DESNO){
             smjer = Smjer.DOLE_DESNO;
           }
           break;
@@ -135,7 +162,7 @@ public class Loptica {
           if(smjer == Smjer.GORE_LIJEVO){
             smjer = Smjer.GORE_DESNO;
           }
-          if(smjer == Smjer.DOLE_LIJEVO){
+          else if(smjer == Smjer.DOLE_LIJEVO){
             smjer = Smjer.DOLE_DESNO;
           }
           break;
@@ -143,7 +170,7 @@ public class Loptica {
           if(smjer == Smjer.GORE_DESNO){
             smjer = Smjer.GORE_LIJEVO;
           }
-          if(smjer == Smjer.DOLE_DESNO){
+          else if(smjer == Smjer.DOLE_DESNO){
             smjer = Smjer.DOLE_LIJEVO;
           }
           break;

@@ -28,15 +28,19 @@ public class Program {
         public void run() {
           KeyStroke key = null;
           try {
-            key = finalTerminal.readInput();
-            while(!key.equals(new KeyStroke(KeyType.Escape))) {
-              i.primiKomandu(key);
-              //Thread.sleep(1);
-              key = finalTerminal.readInput();
+            key = finalTerminal.pollInput();
+            while(key==null || !key.equals(new KeyStroke(KeyType.Escape))) {
+              if(key!=null) {
+                i.primiKomandu(key);
+                //Thread.sleep(1);
+              }
+              key = finalTerminal.pollInput();
             }
             i.stop();
           } catch (IOException e) {
             e.printStackTrace();
+//          } catch (InterruptedException e) {
+//            e.printStackTrace();
           }
         }
       });

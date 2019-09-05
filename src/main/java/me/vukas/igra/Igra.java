@@ -34,6 +34,7 @@ public class Igra {
   public void ponovo() throws IOException {
     r = new Reket(terminal);
     l = new Loptica(terminal);
+
     kensel = false;
     terminal.clearScreen();
   }
@@ -41,7 +42,6 @@ public class Igra {
   public void stop() {
     kensel = true;
     stop = true;
-    ses.shutdown();
   }
 
   public static enum UdarU{
@@ -57,8 +57,7 @@ public class Igra {
     ZID_G
   }
 
-  public ScheduledExecutorService ses = new ScheduledThreadPoolExecutor(1);
-  ScheduledFuture<?> sf;
+  Thread t;
 
   public Igra(Terminal terminal) {
     this.terminal = terminal;
@@ -66,20 +65,30 @@ public class Igra {
 
   public void kreni() throws IOException, InterruptedException {
     nacrtajSve();
-    sf = ses.scheduleAtFixedRate(new Runnable() {
+
+    t = new Thread(new Runnable() {
       @Override
       public void run() {
         try {
-          osvjezi();
+          while(!kensel) {
+            osvjezi();
+            Thread.sleep(100);
+          }
         } catch (IOException e) {
+          e.printStackTrace();
+        } catch (InterruptedException e) {
           e.printStackTrace();
         }
       }
-    }, 100, 100, TimeUnit.MILLISECONDS);
+    });
+    t.setDaemon(true);
+    t.start();
 
     while(!kensel){
       Thread.sleep(1);
     }
+
+    t.join();
   }
 
   private void osvjezi() throws IOException {
@@ -92,7 +101,6 @@ public class Igra {
 
     if(sledPoz.getSled().getRed() == REDOVA + 1){
       //propali smo
-      sf.cancel(true);
       kensel = true;
       return;
     }
