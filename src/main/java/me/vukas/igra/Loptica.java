@@ -13,7 +13,11 @@ public class Loptica {
   private Terminal terminal;
   private enum Smjer{
     DOLE,
-    GORE
+    DOLE_LIJEVO,
+    DOLE_DESNO,
+    GORE,
+    GORE_LIJEVO,
+    GORE_DESNO
   }
   private Smjer smjer = Smjer.DOLE;
   private int kolona;
@@ -30,6 +34,32 @@ public class Loptica {
     terminal.setCursorPosition(startPosition.withColumn(kolona).withRow(red));
     terminal.setBackgroundColor(ANSI.YELLOW);
     terminal.putCharacter(' ');
+  }
+
+  private boolean udaraU(SveTacke koordinate){
+    Koordinate k;
+    switch (smjer){
+      case GORE:
+        k = new Koordinate(red+1, kolona);
+        return koordinate.poklapaSeSa(k);
+      case GORE_DESNO:
+        k = new Koordinate(red+1, kolona+1);
+        return koordinate.poklapaSeSa(k);
+      case GORE_LIJEVO:
+        k = new Koordinate(red+1, kolona-1);
+        return koordinate.poklapaSeSa(k);
+      case DOLE:
+        k = new Koordinate(red-1, kolona);
+        return koordinate.poklapaSeSa(k);
+      case DOLE_DESNO:
+        k = new Koordinate(red-1, kolona+1);
+        return koordinate.poklapaSeSa(k);
+      case DOLE_LIJEVO:
+        k = new Koordinate(red-1, kolona-1);
+        return koordinate.poklapaSeSa(k);
+    }
+
+    return false;
   }
 
   private void pomjeriDolje() throws IOException {
