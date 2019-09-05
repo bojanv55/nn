@@ -8,6 +8,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 
 public class Blok {
 
@@ -44,5 +45,48 @@ public class Blok {
 
     terminal.putCharacter(' ');
 
+  }
+
+  public void ukloni() throws IOException {
+    terminal.setCursorPosition(new TerminalPosition(kolona, red));
+    terminal.setBackgroundColor(TextColor.ANSI.BLACK);
+    terminal.putCharacter(' ');
+  }
+
+  public Igra.UdarU udaraU(PredSled sledPoz) {
+    if (sledPoz.getSled().equals(new Koordinate(red, kolona))){
+      //udara samo da vidimo smjer
+      if(sledPoz.getPred().getRed() == red-1){
+        return Igra.UdarU.BLOK_G;
+      }
+      if(sledPoz.getPred().getRed() == red+1){
+        return Igra.UdarU.BLOK_DOLE;
+      }
+      if(sledPoz.getPred().getKolona() == kolona-1){
+        return Igra.UdarU.BLOK_L;
+      }
+      if(sledPoz.getPred().getKolona() == kolona+1){
+        return Igra.UdarU.BLOK_DESNO;
+      }
+    }
+    return null;
+  }
+
+  public Igra.UdarU udaraU(Koordinate sledPoz) {
+    return null;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Blok blok = (Blok) o;
+    return red == blok.red &&
+            kolona == blok.kolona;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(red, kolona);
   }
 }

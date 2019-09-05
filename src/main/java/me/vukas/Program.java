@@ -21,7 +21,33 @@ public class Program {
       terminal.setCursorVisible(false);
 
       Igra i = new Igra(terminal);
-      i.kreni();
+
+      Terminal finalTerminal = terminal;
+      Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          KeyStroke key = null;
+          try {
+            key = finalTerminal.readInput();
+            while(!key.equals(new KeyStroke(KeyType.Escape))) {
+              i.primiKomandu(key);
+              //Thread.sleep(1);
+              key = finalTerminal.readInput();
+            }
+            i.stop();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      });
+      t.setDaemon(true);
+      t.start();
+
+      while(!i.stop) {
+        i.ponovo();
+        i.kreni();
+      }
+
 
 //      terminal.putCharacter('H');
 //      terminal.putCharacter('e');
@@ -93,12 +119,7 @@ public class Program {
 //      terminal.flush();
 //      Thread.sleep(2000);
 
-      KeyStroke key = terminal.readInput();
-      while(!key.equals(new KeyStroke(KeyType.Escape))) {
-        i.primiKomandu(key);
-        Thread.sleep(5);
-        key = terminal.readInput();
-      }
+
 
     }
     catch(IOException e) {

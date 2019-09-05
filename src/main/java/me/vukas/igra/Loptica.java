@@ -7,6 +7,7 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
+import java.util.Map;
 
 public class Loptica {
 
@@ -36,41 +37,34 @@ public class Loptica {
     terminal.putCharacter(' ');
   }
 
-  private boolean udaraU(SveTacke koordinate){
-    Koordinate k;
+  public PredSled sledecaPozicija(){
+    Koordinate k = null;
     switch (smjer){
       case GORE:
-        k = new Koordinate(red+1, kolona);
-        return koordinate.poklapaSeSa(k);
-      case GORE_DESNO:
-        k = new Koordinate(red+1, kolona+1);
-        return koordinate.poklapaSeSa(k);
-      case GORE_LIJEVO:
-        k = new Koordinate(red+1, kolona-1);
-        return koordinate.poklapaSeSa(k);
-      case DOLE:
         k = new Koordinate(red-1, kolona);
-        return koordinate.poklapaSeSa(k);
-      case DOLE_DESNO:
+        break;
+      case GORE_DESNO:
         k = new Koordinate(red-1, kolona+1);
-        return koordinate.poklapaSeSa(k);
-      case DOLE_LIJEVO:
+        break;
+      case GORE_LIJEVO:
         k = new Koordinate(red-1, kolona-1);
-        return koordinate.poklapaSeSa(k);
+        break;
+      case DOLE:
+        k = new Koordinate(red+1, kolona);
+        break;
+      case DOLE_DESNO:
+        k = new Koordinate(red+1, kolona+1);
+        break;
+      case DOLE_LIJEVO:
+        k = new Koordinate(red+1, kolona-1);
+        break;
     }
 
-    return false;
+    Koordinate pred = new Koordinate(red, kolona);
+    return new PredSled(pred, k);
   }
 
   private void pomjeriDolje() throws IOException {
-
-    //ako smo dosli do reketa odozgo ili do nekog bloka odozgo, smjer ka gore
-    if(red == REDOVA - 1){
-      smjer = Smjer.GORE;
-      pomjeriGore();
-      return;
-    }
-
     brisiLoptu();
 
     red++;
@@ -81,9 +75,6 @@ public class Loptica {
   }
 
   private void pomjeriGore() throws IOException {
-
-    //ako smo dosli do nekog od blokova odozdo ili do gornjeg zida, smjer ka dolje
-
     brisiLoptu();
 
     red--;
@@ -105,7 +96,60 @@ public class Loptica {
     terminal.putCharacter(' ');
   }
 
-  public void osvjezi() throws IOException {
+  public void osvjezi(Igra.UdarU udarU) throws IOException {
+
+    if(udarU!=null){
+      switch (udarU){
+        case REKET_D:
+          smjer = Smjer.GORE_DESNO;
+          break;
+        case REKET_C:
+          smjer = Smjer.GORE;
+          break;
+        case REKET_L:
+          smjer = Smjer.GORE_LIJEVO;
+          break;
+        case BLOK_DOLE:
+          if(smjer == Smjer.GORE) {
+            smjer = Smjer.DOLE;
+          }
+          if(smjer == Smjer.GORE_LIJEVO){
+            smjer = Smjer.DOLE_LIJEVO;
+          }
+          if(smjer == Smjer.GORE_DESNO){
+            smjer = Smjer.DOLE_DESNO;
+          }
+          break;
+        case ZID_G:
+          if(smjer == Smjer.GORE) {
+            smjer = Smjer.DOLE;
+          }
+          if(smjer == Smjer.GORE_LIJEVO){
+            smjer = Smjer.DOLE_LIJEVO;
+          }
+          if(smjer == Smjer.GORE_DESNO){
+            smjer = Smjer.DOLE_DESNO;
+          }
+          break;
+        case ZID_L:
+          if(smjer == Smjer.GORE_LIJEVO){
+            smjer = Smjer.GORE_DESNO;
+          }
+          if(smjer == Smjer.DOLE_LIJEVO){
+            smjer = Smjer.DOLE_DESNO;
+          }
+          break;
+        case ZID_D:
+          if(smjer == Smjer.GORE_DESNO){
+            smjer = Smjer.GORE_LIJEVO;
+          }
+          if(smjer == Smjer.DOLE_DESNO){
+            smjer = Smjer.DOLE_LIJEVO;
+          }
+          break;
+      }
+    }
+
     switch (smjer){
       case DOLE:
         pomjeriDolje();
@@ -113,7 +157,63 @@ public class Loptica {
       case GORE:
         pomjeriGore();
         break;
+      case DOLE_DESNO:
+        pomjeriDoleDesno();
+        break;
+      case DOLE_LIJEVO:
+        pomjeriDoleLijevo();
+        break;
+      case GORE_DESNO:
+        pomjeriGoreDesno();
+        break;
+      case GORE_LIJEVO:
+        pomjeriGoreLijevo();
+        break;
     }
+  }
+
+  private void pomjeriDoleLijevo() throws IOException {
+    brisiLoptu();
+
+    red++;
+    kolona--;
+
+    crtajLoptu();
+
+    terminal.flush();
+  }
+
+  private void pomjeriDoleDesno() throws IOException {
+    brisiLoptu();
+
+    red++;
+    kolona++;
+
+    crtajLoptu();
+
+    terminal.flush();
+  }
+
+  private void pomjeriGoreLijevo() throws IOException {
+    brisiLoptu();
+
+    red--;
+    kolona--;
+
+    crtajLoptu();
+
+    terminal.flush();
+  }
+
+  private void pomjeriGoreDesno() throws IOException {
+    brisiLoptu();
+
+    red--;
+    kolona++;
+
+    crtajLoptu();
+
+    terminal.flush();
   }
 
 }

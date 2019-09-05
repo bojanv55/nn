@@ -15,7 +15,20 @@ public class Reket {
   private static final int DUZINA_REKETA = 12;
   private static final int DUZINA_ZONE = Math.floorDiv(DUZINA_REKETA, 3);
 
-  private static class Zona{
+  public Igra.UdarU udaraU(PredSled sledPoz) {
+    if (REKET_ZONE_L.uZoni(sledPoz.getSled())) {
+      return Igra.UdarU.REKET_L;
+    }
+    if(REKET_ZONE_C.uZoni(sledPoz.getSled())){
+      return Igra.UdarU.REKET_C;
+    }
+    if(REKET_ZONE_D.uZoni(sledPoz.getSled())){
+      return Igra.UdarU.REKET_D;
+    }
+    return null;
+  }
+
+  public class Zona{
     int zonaOd;
     int zonaDo;
 
@@ -24,14 +37,14 @@ public class Reket {
       this.zonaDo = zonaDo;
     }
 
-    public boolean uZoni(int n){
-      return n>=zonaOd && n<=zonaDo;
+    public boolean uZoni(Koordinate koordinate){
+      return koordinate.getRed()==REDOVA-1 && koordinate.getKolona()>= pocetak+zonaOd && koordinate.getKolona()<=zonaDo+pocetak;
     }
   }
 
-  private static final Zona REKET_ZONE_L = new Zona(0 ,DUZINA_ZONE);
-  private static final Zona REKOT_ZONE_C = new Zona(DUZINA_ZONE+1 ,DUZINA_ZONE*2);
-  private static final Zona REKOT_ZONE_D = new Zona(DUZINA_ZONE*2+1 ,DUZINA_ZONE*3);
+  private Zona REKET_ZONE_L = new Zona(1 ,DUZINA_ZONE);
+  private Zona REKET_ZONE_C = new Zona(DUZINA_ZONE+1 ,DUZINA_ZONE*2);
+  private Zona REKET_ZONE_D = new Zona(DUZINA_ZONE*2+1 ,DUZINA_ZONE*3);
 
   private int pocetak;
 

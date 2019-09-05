@@ -12,6 +12,14 @@ public class Koordinate {
     this.kolona = kolona;
   }
 
+  public int getRed() {
+    return red;
+  }
+
+  public int getKolona() {
+    return kolona;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
